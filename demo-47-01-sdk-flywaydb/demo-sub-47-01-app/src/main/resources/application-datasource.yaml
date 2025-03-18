@@ -19,7 +19,7 @@ biz:
         password: suyh_cdap_2_cds
         driver-class-name: com.mysql.cj.jdbc.Driver
         flyway:
-          enabled: true
+          enabled: false
           locations:
             - "sqls/biz"
       slave:
@@ -27,7 +27,10 @@ biz:
         username: suyh_cdap_2_cds
         password: suyh_cdap_2_cds
         driver-class-name: com.mysql.cj.jdbc.Driver
-
+        flyway:
+          enabled: false
+          locations:
+            - "nothing"
 
 
 
