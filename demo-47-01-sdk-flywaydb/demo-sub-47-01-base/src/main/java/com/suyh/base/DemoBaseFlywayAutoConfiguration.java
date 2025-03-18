@@ -2,10 +2,12 @@ package com.suyh.base;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.sql.DataSource;
 
@@ -13,6 +15,8 @@ import javax.sql.DataSource;
  * @author suyh
  * @since 2025-03-18
  */
+@MapperScan("com.suyh.base.mp.mapper")
+@ComponentScan("com.suyh.base.service")
 @AutoConfiguration
 public class DemoBaseFlywayAutoConfiguration {
 
