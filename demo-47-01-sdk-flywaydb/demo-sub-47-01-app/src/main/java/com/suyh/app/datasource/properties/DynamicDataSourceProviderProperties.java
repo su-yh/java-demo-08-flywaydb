@@ -8,6 +8,7 @@ import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
+import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -46,20 +47,20 @@ public class DynamicDataSourceProviderProperties implements DynamicDataSourcePro
     }
 
     private void doFlyway(HikariDataSourcePlus ds) throws Exception {
-        BizFlywayProperties bizFlyway = ds.getFlyway();
-        if (!bizFlyway.isEnabled()) {
+        FlywayProperties flywayProperties = ds.getFlyway();
+        if (!flywayProperties.isEnabled()) {
             return;
         }
 
-        String[] locations = ds.getFlyway().getLocations();
+        String[] locations = flywayProperties.getLocations().toArray(new String[0]);
         FluentConfiguration cdsWebFlywayConfig = new FluentConfiguration();
         cdsWebFlywayConfig.baselineOnMigrate(true)
                 .dataSource(ds)
                 .locations(locations)
-                .table("flyway_biz_history")
-                .validateOnMigrate(true)
-                .ignoreFutureMigrations(true)
-                .outOfOrder(true);
+                .table(flywayProperties.getTable())
+                .validateOnMigrate(flywayProperties.isValidateOnMigrate())
+                .ignoreFutureMigrations(flywayProperties.isIgnoreFutureMigrations())
+                .outOfOrder(flywayProperties.isOutOfOrder());
         Flyway cdsWebFlyway = cdsWebFlywayConfig.load();
         FlywayMigrationInitializer flywayMigrationInitializer = new FlywayMigrationInitializer(cdsWebFlyway, null);
         flywayMigrationInitializer.afterPropertiesSet();
