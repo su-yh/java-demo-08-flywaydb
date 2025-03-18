@@ -15,14 +15,16 @@
         <spring-boot.version>2.7.4</spring-boot.version>
 
         <mybatisplus.version>3.5.5</mybatisplus.version>
+        <flyway.version>7.15.0</flyway.version>
+        <dynamic-datasource.version>3.6.1</dynamic-datasource.version>
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.suyh</groupId>-->
-<!--            <artifactId>demo-sub-47-01-base</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.suyh</groupId>
+            <artifactId>demo-sub-47-01-base</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,12 +50,24 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>${dynamic-datasource.version}</version>
         </dependency>
     </dependencies>
 

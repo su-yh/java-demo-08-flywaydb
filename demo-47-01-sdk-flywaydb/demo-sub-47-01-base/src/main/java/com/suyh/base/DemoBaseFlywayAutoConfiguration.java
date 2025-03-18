@@ -14,18 +14,17 @@ import javax.sql.DataSource;
  * @since 2025-03-18
  */
 @AutoConfiguration
-public class DemoBaseFlywayConfiguration {
+public class DemoBaseFlywayAutoConfiguration {
 
     @ConditionalOnSingleCandidate(DataSource.class)
-    @Bean("cdsMysqlFlyway")
-    public FlywayMigrationInitializer cdsMysqlFlyway(
-            DataSource dataSource) {
-        String[] locations = {"classpath:/sqls/mysql"};
+    @Bean("baseSystemFlyway")
+    public FlywayMigrationInitializer baseSystemFlyway(DataSource dataSource) {
+        String[] locations = {"classpath:/sqls/system/mysql"};
         FluentConfiguration cdsWebFlywayConfig = new FluentConfiguration();
         cdsWebFlywayConfig.baselineOnMigrate(true)
                 .dataSource(dataSource)
                 .locations(locations)
-                .table("flyway_schema_history")
+                .table("flyway_system_history")
                 .validateOnMigrate(true)
                 .ignoreFutureMigrations(true)
                 .outOfOrder(true);
