@@ -1,16 +1,22 @@
 package com.suyh.app.datasource.properties;
 
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import com.suyh.app.datasource.DataSourceNames;
-import com.suyh.app.datasource.HikariDataSourceShow;
+import com.suyh.app.datasource.DatsSourceNames;
+import com.suyh.app.datasource.HikariDataSourcePlus;
 import lombok.Data;
+import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -20,26 +26,43 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "biz.datasource")
 @Data
 @Validated
-public class DynamicDataSourceProviderProperties implements DynamicDataSourceProvider {
-    @NotNull
+public class DynamicDataSourceProviderProperties implements DynamicDataSourceProvider, InitializingBean {
     @NestedConfigurationProperty
-    private HikariDataSourceShow master;
-
-    @NestedConfigurationProperty
-    private HikariDataSourceShow slave;
-
-    private static Map<String, DataSource> mapDatasource;
+    @Valid
+    private final Map<DatsSourceNames, HikariDataSourcePlus> multi = new HashMap<>();
 
     @Override
     public synchronized Map<String, DataSource> loadDataSources() {
-        if (mapDatasource == null) {
-            mapDatasource = new HashMap<>();
+        Map<String, DataSource> map = new HashMap<>();
+        multi.forEach((k, v) -> map.put(k.name().toLowerCase(Locale.ROOT), v));
+        return map;
+    }
 
-            mapDatasource.put(DataSourceNames.MASTER, master);
-            if (slave != null) {
-                mapDatasource.put(DataSourceNames.SLAVE, slave);
-            }
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Collection<HikariDataSourcePlus> hikariDataSourcePluses = multi.values();
+        for (HikariDataSourcePlus ds : hikariDataSourcePluses) {
+            doFlyway(ds);
         }
-        return mapDatasource;
+    }
+
+    private void doFlyway(HikariDataSourcePlus ds) throws Exception {
+        BizFlywayProperties bizFlyway = ds.getFlyway();
+        if (!bizFlyway.isEnabled()) {
+            return;
+        }
+
+        String[] locations = ds.getFlyway().getLocations();
+        FluentConfiguration cdsWebFlywayConfig = new FluentConfiguration();
+        cdsWebFlywayConfig.baselineOnMigrate(true)
+                .dataSource(ds)
+                .locations(locations)
+                .table("flyway_biz_history")
+                .validateOnMigrate(true)
+                .ignoreFutureMigrations(true)
+                .outOfOrder(true);
+        Flyway cdsWebFlyway = cdsWebFlywayConfig.load();
+        FlywayMigrationInitializer flywayMigrationInitializer = new FlywayMigrationInitializer(cdsWebFlyway, null);
+        flywayMigrationInitializer.afterPropertiesSet();
     }
 }

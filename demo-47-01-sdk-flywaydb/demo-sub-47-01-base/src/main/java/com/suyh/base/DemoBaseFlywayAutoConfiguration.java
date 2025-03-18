@@ -20,16 +20,16 @@ public class DemoBaseFlywayAutoConfiguration {
     @Bean("baseSystemFlyway")
     public FlywayMigrationInitializer baseSystemFlyway(DataSource dataSource) {
         String[] locations = {"classpath:/sqls/system/mysql"};
-        FluentConfiguration cdsWebFlywayConfig = new FluentConfiguration();
-        cdsWebFlywayConfig.baselineOnMigrate(true)
+        FluentConfiguration flywayConfig = new FluentConfiguration();
+        flywayConfig.baselineOnMigrate(true)
                 .dataSource(dataSource)
                 .locations(locations)
                 .table("flyway_system_history")
                 .validateOnMigrate(true)
                 .ignoreFutureMigrations(true)
                 .outOfOrder(true);
-        Flyway cdsWebFlyway = cdsWebFlywayConfig.load();
-        return new FlywayMigrationInitializer(cdsWebFlyway, null);
+        Flyway flyway = flywayConfig.load();
+        return new FlywayMigrationInitializer(flyway, null);
     }
 
 }

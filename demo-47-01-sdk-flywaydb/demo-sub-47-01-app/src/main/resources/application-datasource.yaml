@@ -12,16 +12,21 @@ spring:
 
 biz:
   datasource:
-    master:
-      jdbc-url: jdbc:mysql://192.168.8.143:3306/suyh_cdap_2_cds?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
-      username: suyh_cdap_2_cds
-      password: suyh_cdap_2_cds
-      driver-class-name: com.mysql.cj.jdbc.Driver
-    slave:
-      jdbc-url: jdbc:mysql://192.168.8.143:3306/suyh_cdap_2_cds?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
-      username: suyh_cdap_2_cds
-      password: suyh_cdap_2_cds
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    multi:
+      master:
+        jdbc-url: jdbc:mysql://192.168.8.143:3306/suyh_cdap_2_cds?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+        username: suyh_cdap_2_cds
+        password: suyh_cdap_2_cds
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        flyway:
+          enabled: true
+          locations:
+            - "sqls/biz"
+      slave:
+        jdbc-url: jdbc:mysql://192.168.8.143:3306/suyh_cdap_2_cds?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai
+        username: suyh_cdap_2_cds
+        password: suyh_cdap_2_cds
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
 
 
