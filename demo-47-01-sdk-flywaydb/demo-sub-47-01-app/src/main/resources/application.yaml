@@ -1,0 +1,17 @@
+spring:
+  config:
+    import:
+      - application-base.yaml
+      - application-datasource.yaml
+      - application-flyway.yaml
+      - application-jackson.yaml
+      - application-knife4j.yaml
+      - application-log.yaml
+      - application-spring.yaml
+      - application-web.yaml
+
+
+
+
+
+

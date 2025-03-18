@@ -1,0 +1,12 @@
+
+spring:
+  flyway:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: suyh
+
+
