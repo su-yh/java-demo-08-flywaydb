@@ -1,7 +1,7 @@
 package com.suyh.app.datasource.properties;
 
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import com.suyh.app.datasource.DatsSourceNames;
+import com.suyh.app.datasource.DataSourceEnums;
 import com.suyh.app.datasource.HikariDataSourcePlus;
 import lombok.Data;
 import org.flywaydb.core.Flyway;
@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -29,12 +28,12 @@ import java.util.Map;
 public class DynamicDataSourceProviderProperties implements DynamicDataSourceProvider, InitializingBean {
     @NestedConfigurationProperty
     @Valid
-    private final Map<DatsSourceNames, HikariDataSourcePlus> multi = new HashMap<>();
+    private final Map<DataSourceEnums, HikariDataSourcePlus> multi = new HashMap<>();
 
     @Override
     public synchronized Map<String, DataSource> loadDataSources() {
         Map<String, DataSource> map = new HashMap<>();
-        multi.forEach((k, v) -> map.put(k.name().toLowerCase(Locale.ROOT), v));
+        multi.forEach((k, v) -> map.put(k.getCode(), v));
         return map;
     }
 
