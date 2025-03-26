@@ -1,4 +1,4 @@
-package com.suyh.app.datasource;
+package com.suyh.app.datasource.constant;
 
 /**
  * @author suyh

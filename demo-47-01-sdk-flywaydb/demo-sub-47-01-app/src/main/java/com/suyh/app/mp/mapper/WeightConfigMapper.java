@@ -1,7 +1,7 @@
 package com.suyh.app.mp.mapper;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.suyh.app.datasource.DataSourceNames;
+import com.suyh.app.datasource.constant.DataSourceNames;
 import com.suyh.app.mp.entity.WeightConfigEntity;
 import com.suyh.base.mp.mybatis.BaseMapperX;
 import com.suyh.base.mp.mybatis.LambdaQueryWrapperX;

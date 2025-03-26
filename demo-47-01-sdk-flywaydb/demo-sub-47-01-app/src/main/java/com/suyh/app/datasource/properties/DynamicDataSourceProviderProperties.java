@@ -1,8 +1,8 @@
 package com.suyh.app.datasource.properties;
 
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
-import com.suyh.app.datasource.DataSourceEnums;
-import com.suyh.app.datasource.HikariDataSourcePlus;
+import com.suyh.app.datasource.constant.DataSourceEnums;
+import com.suyh.app.datasource.hikari.HikariDataSourcePlus;
 import lombok.Data;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
